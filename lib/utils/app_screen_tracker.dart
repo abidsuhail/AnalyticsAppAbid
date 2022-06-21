@@ -7,8 +7,9 @@ import 'app_constants.dart';
 
 class AppScreenTrackerHelper {
   //static Map<String, Timer>? _map;
-  static final Map<String, ScreenTrackerTimestamp> _map2 =
+  static final Map<String, ScreenTrackerTimestamp> _mapTimestamp =
       <String, ScreenTrackerTimestamp>{};
+  static final Map<String, int> _mapScreenCount = <String, int>{};
 /*
   ///also one way is find the difference of start screen and end screen
   static Map<String, Timer> getTimerMap() {
@@ -21,7 +22,11 @@ class AppScreenTrackerHelper {
     ///start date at init screen
     ///end date at dispose screen
     ///find the diff b/w them and send to firestore
-    _map2[widget.runtimeType.toString()] =
+    ///+1 count screen opens
+    _mapScreenCount[widget.runtimeType.toString()] =
+        (_mapScreenCount[widget.runtimeType.toString()] ?? 0) + 1;
+    print("count " + _mapScreenCount[widget.runtimeType.toString()].toString());
+    _mapTimestamp[widget.runtimeType.toString()] =
         ScreenTrackerTimestamp(startTime: DateTime.now());
   }
 
@@ -30,9 +35,10 @@ class AppScreenTrackerHelper {
     ///start date at init screen
     ///end date at dispose screen
     ///find the diff b/w them and send to firestore
-    _map2[widget.runtimeType.toString()]?.endTime = DateTime.now();
-    DateTime? startTime = _map2[widget.runtimeType.toString()]?.startTime;
-    DateTime? endTime = _map2[widget.runtimeType.toString()]?.endTime;
+    _mapTimestamp[widget.runtimeType.toString()]?.endTime = DateTime.now();
+    DateTime? startTime =
+        _mapTimestamp[widget.runtimeType.toString()]?.startTime;
+    DateTime? endTime = _mapTimestamp[widget.runtimeType.toString()]?.endTime;
     if (startTime == null || endTime == null) {
       print('either value is null');
       return;
