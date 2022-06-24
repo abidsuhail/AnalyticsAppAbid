@@ -9,5 +9,10 @@ class AppColors {
     Color(0xfffd79a8),
     Color(0xffe17055),
     Color(0xff6c5ce7),
+    Color(0xffe00404),
+    Color(0xff37E2D5),
+    Color(0xffD6D5A8),
+    Color(0xff9EB23B),
+    Color(0xffFF06B7),
   ];
 }

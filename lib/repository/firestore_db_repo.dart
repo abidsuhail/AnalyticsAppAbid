@@ -15,7 +15,10 @@ class FirestoreDbRepo {
     return await AppFirebaseHelper.getMyScreenDocRef().get();
   }
 
-  Future<DocumentSnapshot> getClicksAnalytics() async {
+  Future<DocumentSnapshot> getEventsClicksAnalytics() async {
     return await AppFirebaseHelper.getMyClicksDocRef().get();
   }
+  /* Future<DocumentSnapshot> getClicksAnalytics() async {
+    return await AppFirebaseHelper.getMyClicksDocRef().get();
+  }*/
 }

@@ -17,7 +17,30 @@ class MyActivityCubit extends Cubit<MyActivityState> {
 
   void getScreensAnalytics() async {
     try {
-      emit(GetScreenAnalyticLoadingState());
+      emit(GetScreenTimeLoadingState());
+      DocumentSnapshot documentSnapshot = await repo.getScreensAnalytics();
+      if (documentSnapshot.exists) {
+        Map<String, double> screenDurmap =
+            ((documentSnapshot.data() as Map<String, dynamic>)
+                .map((key, value) {
+          Map<String, dynamic> finalMap = (value as Map<String, dynamic>);
+          return MapEntry(
+              key, double.parse((finalMap['duration'] / 60).toString()));
+        }));
+
+        emit(GetScreenTimeSuccessState(screenDurmap));
+      } else {
+        emit(GetScreenTimeErrorState('Data Not Exists!'));
+      }
+    } catch (e) {
+      print(e);
+      emit(GetScreenTimeErrorState(e.toString()));
+    }
+  }
+
+  void getScreensOpenedAnalytics() async {
+    try {
+      emit(GetScreenOpenedLoadingState());
       DocumentSnapshot documentSnapshot = await repo.getScreensAnalytics();
       if (documentSnapshot.exists) {
         /* emit(GetScreenAnalyticSuccessState((documentSnapshot.data()
@@ -27,16 +50,53 @@ class MyActivityCubit extends Cubit<MyActivityState> {
             .toList()));*/
         /* (documentSnapshot.data() as Map<String, dynamic>)
             .map((key, value) => MapEntry(key, value['duration'] ?? '0'));*/
-        emit(GetScreenAnalyticSuccessState(
-            (documentSnapshot.data() as Map<String, dynamic>).map(
-                (key, value) => MapEntry(
-                    key, int.parse(value['duration'] ?? '0').toDouble()))));
+
+        Map<String, double> map =
+            ((documentSnapshot.data() as Map<String, dynamic>)
+                .map((key, value) {
+          Map<String, dynamic> finalMap = (value as Map<String, dynamic>);
+          return MapEntry(
+              key, double.parse((finalMap['times_opened']).toString()));
+        }));
+        //print(map);
+        emit(GetScreenOpenedSuccessState(map));
       } else {
-        emit(GetScreenAnalyticErrorState('Data Not Exists!'));
+        emit(GetScreenOpenedErrorState('Data Not Exists!'));
       }
     } catch (e) {
       print(e);
-      emit(GetScreenAnalyticErrorState(e.toString()));
+      emit(GetScreenOpenedErrorState(e.toString()));
+    }
+  }
+
+  void getEventClicksAnalytics() async {
+    try {
+      emit(GetEventsClickedLoadingState());
+      DocumentSnapshot documentSnapshot = await repo.getEventsClicksAnalytics();
+      if (documentSnapshot.exists) {
+        /* emit(GetScreenAnalyticSuccessState((documentSnapshot.data()
+                as Map<String, Map<String, dynamic>>)
+            .entries
+            .map((e) => ScreenModel2(key: e.key, value: e.value['duration']))
+            .toList()));*/
+        /* (documentSnapshot.data() as Map<String, dynamic>)
+            .map((key, value) => MapEntry(key, value['duration'] ?? '0'));*/
+
+        Map<String, double> map =
+            ((documentSnapshot.data() as Map<String, dynamic>)
+                .map((key, value) {
+          Map<String, dynamic> finalMap = (value as Map<String, dynamic>);
+          return MapEntry(
+              key, double.parse((finalMap['click_count']).toString()));
+        }));
+        //print(map);
+        emit(GetEventsClickedSuccessState(map));
+      } else {
+        emit(GetEventsClickedErrorState('Data Not Exists!'));
+      }
+    } catch (e) {
+      print(e);
+      emit(GetEventsClickedErrorState(e.toString()));
     }
   }
 }

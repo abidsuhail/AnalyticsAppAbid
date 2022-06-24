@@ -10,43 +10,69 @@ class MyActivityInitialState extends MyActivityState {
   List<Object> get props => [];
 }
 
-class GetScreenAnalyticLoadingState extends MyActivityState {
+class GetScreenTimeLoadingState extends MyActivityState {
   @override
   List<Object> get props => [];
 }
 
-class GetScreenAnalyticSuccessState extends MyActivityState {
+class GetScreenTimeSuccessState extends MyActivityState {
   final Map<String, double> mapScreenDuration;
 
-  GetScreenAnalyticSuccessState(this.mapScreenDuration);
+  GetScreenTimeSuccessState(this.mapScreenDuration);
   @override
   List<Object> get props => [];
 }
 
-class GetScreenAnalyticErrorState extends MyActivityState {
+class GetScreenTimeErrorState extends MyActivityState {
   final String msg;
 
-  GetScreenAnalyticErrorState(this.msg);
+  GetScreenTimeErrorState(this.msg);
 
   @override
   List<Object> get props => [];
 }
 
-//--------------------------------------------------------
-class SignupLoadingState extends MyActivityState {
+///------------------------------------------------------------------------------------------
+class GetScreenOpenedLoadingState extends MyActivityState {
   @override
   List<Object> get props => [];
 }
 
-class SignupSuccessState extends MyActivityState {
+class GetScreenOpenedSuccessState extends MyActivityState {
+  final Map<String, double> mapScreenOpened;
+
+  GetScreenOpenedSuccessState(this.mapScreenOpened);
   @override
   List<Object> get props => [];
 }
 
-class SignupErrorState extends MyActivityState {
+class GetScreenOpenedErrorState extends MyActivityState {
   final String msg;
 
-  SignupErrorState(this.msg);
+  GetScreenOpenedErrorState(this.msg);
+
+  @override
+  List<Object> get props => [];
+}
+
+///------------------------------------------------------------------------------------------
+class GetEventsClickedLoadingState extends MyActivityState {
+  @override
+  List<Object> get props => [];
+}
+
+class GetEventsClickedSuccessState extends MyActivityState {
+  final Map<String, double> mapScreenEvents;
+
+  GetEventsClickedSuccessState(this.mapScreenEvents);
+  @override
+  List<Object> get props => [];
+}
+
+class GetEventsClickedErrorState extends MyActivityState {
+  final String msg;
+
+  GetEventsClickedErrorState(this.msg);
 
   @override
   List<Object> get props => [];

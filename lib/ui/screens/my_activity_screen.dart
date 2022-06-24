@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:analytics_app/styles/app_colors.dart';
-import 'package:analytics_app/ui/fragments/screen_count_fragment.dart';
+import 'package:analytics_app/ui/fragments/event_clicks_analytics_fragment.dart';
+import 'package:analytics_app/ui/fragments/screen_analytics_fragment.dart';
 import 'package:analytics_app/ui/screens/calc_screen.dart';
 import 'package:analytics_app/utils/app_constants.dart';
 import 'package:analytics_app/utils/app_firebase_helper.dart';
@@ -64,7 +65,7 @@ class _MyActivityScreenState extends State<MyActivityScreen>
           title: const Text("My Activity"),
           centerTitle: true,
           backgroundColor: AppColors.primaryColor,
-          bottom: TabBar(
+          bottom: const TabBar(
             tabs: [
               Tab(
                 icon: Icon(Icons.mobile_screen_share),
@@ -80,8 +81,8 @@ class _MyActivityScreenState extends State<MyActivityScreen>
         ),
         body: TabBarView(
           children: [
-            ScreenCountFragment(),
-            Container(),
+            ScreenAnalyticsFragment(),
+            const EventClicksAnalyticsFragment(),
             Container(),
           ],
         ),
