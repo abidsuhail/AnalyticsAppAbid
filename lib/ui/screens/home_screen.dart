@@ -212,41 +212,41 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void onTapBackground() {
-    super.onClickTrack('HomeScreenBackground');
+    super.onClickTrack('HomeScreenBackground', context);
   }
 
   void onPressedViewBird() {
-    super.onClickTrack('ViewBirdButton');
+    super.onClickTrack('ViewBirdButton', context);
     gotoScreen(context, BirdFlyingScreen(), currentScreenTrackerWidget: widget);
   }
 
   void onTapPlus() {
-    super.onClickTrack('PlusButton');
+    super.onClickTrack('PlusButton', context);
     setState(() {
       count++;
     });
   }
 
   void onTapMinus() {
-    super.onClickTrack('MinusButton');
+    super.onClickTrack('MinusButton', context);
     setState(() {
       count--;
     });
   }
 
   void onTapEvent1() {
-    super.onClickTrack('Event1Button');
+    super.onClickTrack('Event1Button', context);
   }
 
   void onTapEvent2() {
-    super.onClickTrack('Event2Button');
+    super.onClickTrack('Event2Button', context);
   }
 
   void onTapEvent3() {
-    super.onClickTrack('Event3Button');
+    super.onClickTrack('Event3Button', context);
   }
 
   void onTapEvent4() {
-    super.onClickTrack('Event4Button');
+    super.onClickTrack('Event4Button', context);
   }
 }

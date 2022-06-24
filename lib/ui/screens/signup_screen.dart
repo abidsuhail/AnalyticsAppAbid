@@ -2,7 +2,7 @@ import 'package:analytics_app/blocs/auth/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:analytics_app/ui/screens/login_screen.dart';
-import 'package:analytics_app/ui/screens/signup_screen_2.dart';
+import 'package:analytics_app/ui/screens/signup_screen.dart';
 import 'package:analytics_app/widgets/app_rounded_button.dart';
 import 'package:analytics_app/widgets/app_rounded_text_field.dart';
 import 'package:provider/provider.dart';
@@ -12,17 +12,15 @@ import '../../styles/app_colors.dart';
 import '../../utils/ui_helper.dart';
 import 'home_screen.dart';
 
-class SignupScreen2 extends StatefulWidget {
+class SignupScreen extends StatefulWidget {
   @override
-  State<SignupScreen2> createState() => _SignupScreen2State();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _SignupScreen2State extends State<SignupScreen2> {
+class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
-  bool progress = false;
-  String? custName, custMob, custEmail, custAddr, custPassword, otp;
+  String? email, pass, repass;
   late AuthCubit authCubit;
-  String? custNumModified = "";
   @override
   void initState() {
     authCubit = BlocProvider.of<AuthCubit>(context);
@@ -39,9 +37,20 @@ class _SignupScreen2State extends State<SignupScreen2> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(
-                  'assets/logo2.png',
-                ),
+                Container(
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'images/logo.png',
+                          height: 150,
+                        ),
+                        Text(
+                          'Analytic App',
+                          style: TextStyle(fontSize: 30, letterSpacing: 3),
+                        ),
+                      ],
+                    )),
                 const SizedBox(
                   height: 10,
                 ),
@@ -60,7 +69,7 @@ class _SignupScreen2State extends State<SignupScreen2> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Sign Up',
                         style: TextStyle(
                             fontSize: 25,
@@ -86,130 +95,51 @@ class _SignupScreen2State extends State<SignupScreen2> {
                         child: Column(
                           children: [
                             AppRoundedTextField(
-                                label: 'Customer Code',
-                                hintText: 'Enter the Customer Code',
-                                prefixIconData: Icons.person,
-                                readOnly: true,
-                                validator: (value) {
-                                  if (value == '') {
-                                    return 'Please enter the Customer Code';
-                                  }
-                                  return null;
-                                },
-                                onChanged: (val) {}),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            AppRoundedTextField(
-                                label: 'Customer Name',
-                                hintText: 'Enter the Customer Name',
-                                prefixIconData: Icons.person,
-                                readOnly: true,
-                                validator: (value) {
-                                  if (value == '') {
-                                    return 'Please enter the Customer Name';
-                                  }
-                                  return null;
-                                },
-                                onChanged: (val) {
-                                  custName = val;
-                                }),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            AppRoundedTextField(
-                                label: 'Mobile',
-                                validator: (value) {
-                                  if (value == '') {
-                                    return 'Please enter the Mobile';
-                                  }
-                                  return null;
-                                },
-                                readOnly: true,
-                                /*   controller: TextEditingController(
-                                      text: widget
-                                          .searchResponseModel.custMobile),*/
-                                controller: TextEditingController(
-                                    text: custNumModified),
-                                prefixIconData: Icons.phone_android,
-                                textInputType: TextInputType.phone,
-                                // maxLength: 10,
-                                hintText: 'Mobile No.',
-                                onChanged: (val) {
-                                  custMob = val;
-                                }),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            AppRoundedTextField(
                                 label: 'Email',
+                                hintText: 'Enter the Email',
+                                prefixIconData: Icons.mail,
                                 validator: (value) {
                                   if (value == '') {
                                     return 'Please enter the Email';
                                   }
                                   return null;
                                 },
-                                readOnly: true,
-                                prefixIconData: Icons.email,
-                                textInputType: TextInputType.text,
-                                //maxLength: 10,
-                                hintText: 'Enter the Email',
                                 onChanged: (val) {
-                                  custEmail = val;
-                                }),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            /*AppRoundedTextField(
-                                  label: 'Password',
-                                  validator: (value) {
-                                    if (value == '') {
-                                      return 'Please enter the New Password';
-                                    }
-                                    return null;
-                                  },
-                                  prefixIconData: Icons.email,
-                                  textInputType: TextInputType.text,
-                                  obsureText: true,
-                                  maxLength: 10,
-                                  hintText: 'Enter the New Password',
-                                  onChanged: (val) {
-                                    custPassword = val;
-                                  }),
-                              const SizedBox(
-                                height: 15,
-                              ),*/
-                            AppRoundedTextField(
-                                label: 'OTP',
-                                validator: (value) {
-                                  if (value == '') {
-                                    return 'Please enter the OTP';
-                                  }
-                                  return null;
-                                },
-                                prefixIconData: Icons.password,
-                                textInputType: TextInputType.number,
-                                hintText: 'Enter the OTP',
-                                onChanged: (val) {
-                                  otp = val;
+                                  email = val;
                                 }),
                             const SizedBox(
                               height: 30,
                             ),
                             AppRoundedTextField(
-                                label: 'Address',
-                                hintText: 'Enter the Address',
-                                prefixIconData: Icons.home_work_outlined,
-                                maxLines: 3,
-                                readOnly: true,
+                                label: 'Password',
+                                hintText: 'Enter the Password',
+                                prefixIconData: Icons.vpn_key,
+                                obsureText: true,
                                 validator: (value) {
                                   if (value == '') {
-                                    return 'Please enter the Address';
+                                    return 'Please enter the password';
                                   }
                                   return null;
                                 },
                                 onChanged: (val) {
-                                  custAddr = val;
+                                  pass = val;
+                                }),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            AppRoundedTextField(
+                                label: 'Re-Enter Password',
+                                hintText: 'Re-Enter the Password',
+                                prefixIconData: Icons.vpn_key,
+                                obsureText: true,
+                                validator: (value) {
+                                  if (value == '') {
+                                    return 'Please re-enter password';
+                                  }
+                                  return null;
+                                },
+                                onChanged: (val) {
+                                  repass = val;
                                 }),
                           ],
                         ),
@@ -292,6 +222,23 @@ class _SignupScreen2State extends State<SignupScreen2> {
 
   void onPressedSignup() async {
     //UIHelper.gotoScreen(context, ChangePasswordSignupScreen3());
-    // authCubit.register(username: widget.searchResponseModel.custNo!, otp: otp!);
+    if (email == null || email == '') {
+      UIHelper.showAlertDialog(context, 'Please enter the email!');
+      return;
+    }
+    if (pass == null || pass == '') {
+      UIHelper.showAlertDialog(context, 'Please enter the password!');
+      return;
+    }
+    if (repass == null || repass == '') {
+      UIHelper.showAlertDialog(context, 'Please re-enter the password!');
+      return;
+    }
+    if (pass != repass) {
+      UIHelper.showAlertDialog(
+          context, 'Repeat password should be same new password!');
+      return;
+    }
+    authCubit.signUp(email: email!, password: pass!);
   }
 }

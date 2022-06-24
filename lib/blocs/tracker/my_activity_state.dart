@@ -1,7 +1,4 @@
-import 'package:analytics_app/models/screen_model.dart';
 import 'package:equatable/equatable.dart';
-
-import '../../models/screen_model2.dart';
 
 abstract class MyActivityState extends Equatable {}
 

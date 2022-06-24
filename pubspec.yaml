@@ -41,6 +41,9 @@ dependencies:
   equatable: ^2.0.3
   geolocator: ^8.2.1
   pie_chart: ^5.3.1
+  shared_preferences: ^2.0.15
+  geocoding: ^2.0.4
+  grouped_list: ^5.1.2
 
 dev_dependencies:
   flutter_test:

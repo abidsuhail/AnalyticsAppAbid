@@ -1,5 +1,5 @@
 import 'package:analytics_app/blocs/auth/auth_cubit.dart';
-import 'package:analytics_app/ui/screens/signup_screen_2.dart';
+import 'package:analytics_app/ui/screens/signup_screen.dart';
 import 'package:analytics_app/widgets/app_rounded_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -183,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void onTapSignup() {
-    UIHelper.gotoScreen(context, SignupScreen2());
+    UIHelper.gotoScreen(context, SignupScreen());
   }
 
   void onPressedLogin() async {

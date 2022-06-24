@@ -1,7 +1,10 @@
+import 'package:analytics_app/utils/ui_helper.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 class AppGeoHelper {
-  Future<Position> initPosition() async {
+  static Future<String?> getMyCountry(BuildContext context) async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -11,7 +14,7 @@ class AppGeoHelper {
       // Location services are not enabled don't continue
       // accessing the position and request users of the
       // App to enable the location services.
-      return Future.error('Location services are disabled.');
+      UIHelper.showAlertDialog(context, 'Location services are disabled.');
     }
 
     permission = await Geolocator.checkPermission();
@@ -23,18 +26,29 @@ class AppGeoHelper {
         // Android's shouldShowRequestPermissionRationale
         // returned true. According to Android guidelines
         // your App should show an explanatory UI now.
-        return Future.error('Location permissions are denied');
+        UIHelper.showAlertDialog(context, 'Location permissions are denied');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
-      return Future.error(
+
+      UIHelper.showAlertDialog(context,
           'Location permissions are permanently denied, we cannot request permissions.');
     }
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    return await Geolocator.getCurrentPosition();
+    /* List<Placemark> placemarks =
+    await placemarkFromCoordinates(52.2165157, 6.9437819);*/
+    Position position = await Geolocator.getCurrentPosition();
+    List<Placemark> placemark =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    if (placemark.isNotEmpty) {
+      print('country ' + placemark[0].country.toString());
+      return placemark[0].country.toString();
+    } else {
+      UIHelper.showAlertDialog(context, 'Unable to fetch country');
+    }
   }
 }

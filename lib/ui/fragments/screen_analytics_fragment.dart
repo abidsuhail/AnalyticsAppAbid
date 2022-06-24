@@ -19,7 +19,9 @@ import 'package:pie_chart/pie_chart.dart';
 import '../../menu/drawer_menu.dart';
 
 class ScreenAnalyticsFragment extends StatefulWidget {
-  ScreenAnalyticsFragment({Key? key}) : super(key: key);
+  final Function() refreshHostScreenTrackingDetails;
+  ScreenAnalyticsFragment(this.refreshHostScreenTrackingDetails, {Key? key})
+      : super(key: key);
 
   @override
   State<ScreenAnalyticsFragment> createState() =>
@@ -46,7 +48,7 @@ class _ScreenAnalyticsFragmentState extends State<ScreenAnalyticsFragment>
       removeScreenTracker(widget);
       initScreenTracker(widget);
     }
-
+    widget.refreshHostScreenTrackingDetails();
     myActivityCubit.getScreensAnalytics();
     myActivityCubit.getScreensOpenedAnalytics();
   }
@@ -89,6 +91,7 @@ class _ScreenAnalyticsFragmentState extends State<ScreenAnalyticsFragment>
             AppRoundedButton(
                 label: 'REFRESH',
                 onPressed: () {
+                  onClickTrack('RefreshScreenAnalyticsButton', context);
                   fetchData(isInitState: false);
                 }),
             SizedBox(
@@ -224,7 +227,7 @@ class _ScreenAnalyticsFragmentState extends State<ScreenAnalyticsFragment>
                       showChartValues: true,
                       showChartValuesInPercentage: false,
                       showChartValuesOutside: false,
-                      decimalPlaces: 1,
+                      decimalPlaces: 0,
                     ),
                     // gradientList: ---To add gradient colors---
                     // emptyColorGradient: ---Empty Color gradient---

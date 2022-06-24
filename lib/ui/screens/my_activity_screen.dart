@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:analytics_app/styles/app_colors.dart';
+import 'package:analytics_app/ui/fragments/country_events_analytics_fragment.dart';
 import 'package:analytics_app/ui/fragments/event_clicks_analytics_fragment.dart';
 import 'package:analytics_app/ui/fragments/screen_analytics_fragment.dart';
 import 'package:analytics_app/ui/screens/calc_screen.dart';
@@ -48,6 +49,11 @@ class _MyActivityScreenState extends State<MyActivityScreen>
     super.didChangeAppLifecycleState(state);
   }
 
+  void refreshHostScreenByFragmentOnRefresh() {
+    removeScreenTracker(widget);
+    initScreenTracker(widget, incrementTimesOpened: false);
+  }
+
   @override
   void dispose() {
     WidgetsBinding.instance?.removeObserver(this);
@@ -81,18 +87,13 @@ class _MyActivityScreenState extends State<MyActivityScreen>
         ),
         body: TabBarView(
           children: [
-            ScreenAnalyticsFragment(),
-            const EventClicksAnalyticsFragment(),
-            Container(),
+            ScreenAnalyticsFragment(refreshHostScreenByFragmentOnRefresh),
+            EventClicksAnalyticsFragment(refreshHostScreenByFragmentOnRefresh),
+            CountryEventsAnalyticsFragment(refreshHostScreenByFragmentOnRefresh)
           ],
         ),
         // This trailing comma makes auto-formatting nicer for build methods.
       ),
     );
   }
-
-  void onTapEvent1() {}
-  void onTapEvent2() {}
-  void onTapEvent3() {}
-  void onTapEvent4() {}
 }

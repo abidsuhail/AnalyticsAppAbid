@@ -19,7 +19,11 @@ import 'package:pie_chart/pie_chart.dart';
 import '../../menu/drawer_menu.dart';
 
 class EventClicksAnalyticsFragment extends StatefulWidget {
-  const EventClicksAnalyticsFragment({Key? key}) : super(key: key);
+  final Function() refreshHostScreenTrackingDetails;
+
+  const EventClicksAnalyticsFragment(this.refreshHostScreenTrackingDetails,
+      {Key? key})
+      : super(key: key);
 
   @override
   State<EventClicksAnalyticsFragment> createState() =>
@@ -47,6 +51,7 @@ class _EventClicksAnalyticsFragmentState
       removeScreenTracker(widget);
       initScreenTracker(widget);
     }
+    widget.refreshHostScreenTrackingDetails();
     myActivityCubit.getEventClicksAnalytics();
   }
 
@@ -87,6 +92,8 @@ class _EventClicksAnalyticsFragmentState
             AppRoundedButton(
                 label: 'REFRESH',
                 onPressed: () {
+                  onClickTrack('RefreshEventsClicksButton', context);
+
                   fetchData(isInitState: false);
                 }),
             SizedBox(

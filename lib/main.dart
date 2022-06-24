@@ -1,4 +1,5 @@
 import 'package:analytics_app/blocs/auth/auth_cubit.dart';
+import 'package:analytics_app/blocs/geo/geo_cubit.dart';
 import 'package:analytics_app/blocs/tracker/my_activity_cubit.dart';
 import 'package:analytics_app/repository/auth_repo.dart';
 import 'package:analytics_app/ui/screens/home_screen.dart';
@@ -32,6 +33,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<MyActivityCubit>(
             create: (context) => MyActivityCubit(),
+          ),
+          BlocProvider<GeoCubit>(
+            create: (context) => GeoCubit(),
           ),
         ],
         child: MaterialApp(

@@ -1,5 +1,7 @@
+import 'package:analytics_app/utils/app_geo_helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 class AppFirebaseHelper {
   static FirebaseAuth getAuthInstance() {
@@ -28,5 +30,13 @@ class AppFirebaseHelper {
     return FirebaseFirestore.instance
         .collection('clicks')
         .doc(AppFirebaseHelper.getUid());
+  }
+
+  static Future<CollectionReference> getMyLocationEventsColRef(
+      BuildContext context) async {
+    return FirebaseFirestore.instance
+        .collection('location_events')
+        .doc(AppFirebaseHelper.getUid())
+        .collection("country_events");
   }
 }

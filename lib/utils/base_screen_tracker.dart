@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:analytics_app/models/screen_tracker_info.dart';
+import 'package:analytics_app/utils/app_geo_helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -12,13 +13,6 @@ class BaseScreenTracker {
   static final Map<String, ScreenTrackerTimestamp> _mapTimestamp =
       <String, ScreenTrackerTimestamp>{};
   static final Map<String, int> _mapScreenCount = <String, int>{};
-/*
-  ///also one way is find the difference of start screen and end screen
-  static Map<String, Timer> getTimerMap() {
-    ///creating singleton map
-    _map ??= <String, Timer>{};
-    return _map!;
-  }*/
 
   void gotoScreen(BuildContext context, Widget toScreen,
       {bool? removePreviousStack,
@@ -29,12 +23,14 @@ class BaseScreenTracker {
     initScreenTracker(currentScreenTrackerWidget);
   }
 
-  void initScreenTracker(Widget widget) {
+  void initScreenTracker(Widget widget, {bool? incrementTimesOpened}) {
     ///start date at init screen
     ///end date at dispose screen
     ///find the diff b/w them and send to firestore
     ///+1 count screen opens
-    incTimeScreenOpened(widget);
+    if (incrementTimesOpened == null || incrementTimesOpened) {
+      incTimeScreenOpened(widget);
+    }
     _mapScreenCount[widget.runtimeType.toString()] =
         (_mapScreenCount[widget.runtimeType.toString()] ?? 0) + 1;
 
@@ -43,14 +39,21 @@ class BaseScreenTracker {
         ScreenTrackerTimestamp(startTime: DateTime.now());
   }
 
-  void onClickTrack(String clickName) {
+  void onClickTrack(String clickName, BuildContext context) async {
     DocumentReference doc = AppFirebaseHelper.getMyClicksDocRef();
     doc.set({
       clickName: {
         "click_count": FieldValue.increment(1),
-        "event_name": clickName
+        "event_name": clickName,
+        "country": await AppGeoHelper.getMyCountry(context)
       },
     }, SetOptions(merge: true));
+    CollectionReference? myLocRefEvent =
+        await AppFirebaseHelper.getMyLocationEventsColRef(context);
+    myLocRefEvent.add({
+      "event_name": clickName,
+      "country": (await AppGeoHelper.getMyCountry(context)) ?? ""
+    });
   }
 
   void incTimeScreenOpened(Widget widget) {
@@ -76,9 +79,6 @@ class BaseScreenTracker {
       },
     }, SetOptions(merge: true));
   }
-  /*void onDisposeScreenTracker(WidgetsBindingObserver widgetsBindingObserver) {
-    WidgetsBinding.instance?.removeObserver(widgetsBindingObserver);
-  }*/
 
   void removeScreenTracker(Widget widget) {
     ///start date at init screen

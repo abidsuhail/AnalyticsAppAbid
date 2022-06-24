@@ -50,7 +50,7 @@ class DrawerMenu {
           ListTile(
             onTap: () {
               Navigator.pop(context);
-              homeScreen.onClickTrack('DashboardDrawerButton');
+              homeScreen.onClickTrack('DashboardDrawerButton', context);
             },
             leading: Icon(
               Icons.home,
@@ -64,7 +64,7 @@ class DrawerMenu {
           ListTile(
             onTap: () {
               Navigator.pop(context);
-              homeScreen.onClickTrack('MyActivityDrawerButton');
+              homeScreen.onClickTrack('MyActivityDrawerButton', context);
               homeScreen.gotoScreen(context, MyActivityScreen(),
                   currentScreenTrackerWidget: widget);
             },
@@ -79,7 +79,7 @@ class DrawerMenu {
           ),
           ListTile(
             onTap: () async {
-              homeScreen.onClickTrack('LogoutDrawerButton');
+              homeScreen.onClickTrack('LogoutDrawerButton', context);
 
               await AppFirebaseHelper.logout();
               UIHelper.gotoScreen(context, LoginScreen(),

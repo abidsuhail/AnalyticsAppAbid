@@ -1,5 +1,3 @@
-import 'package:analytics_app/models/screen_model.dart';
-import 'package:analytics_app/models/screen_model2.dart';
 import 'package:analytics_app/repository/auth_repo.dart';
 import 'package:analytics_app/repository/firestore_db_repo.dart';
 import 'package:bloc/bloc.dart';
@@ -24,8 +22,11 @@ class MyActivityCubit extends Cubit<MyActivityState> {
             ((documentSnapshot.data() as Map<String, dynamic>)
                 .map((key, value) {
           Map<String, dynamic> finalMap = (value as Map<String, dynamic>);
-          return MapEntry(
-              key, double.parse((finalMap['duration'] / 60).toString()));
+
+          String durationInMin = finalMap['duration'] == null
+              ? "0"
+              : ((finalMap['duration'] / 60).toString());
+          return MapEntry(key, double.parse(durationInMin));
         }));
 
         emit(GetScreenTimeSuccessState(screenDurmap));
@@ -43,22 +44,18 @@ class MyActivityCubit extends Cubit<MyActivityState> {
       emit(GetScreenOpenedLoadingState());
       DocumentSnapshot documentSnapshot = await repo.getScreensAnalytics();
       if (documentSnapshot.exists) {
-        /* emit(GetScreenAnalyticSuccessState((documentSnapshot.data()
-                as Map<String, Map<String, dynamic>>)
-            .entries
-            .map((e) => ScreenModel2(key: e.key, value: e.value['duration']))
-            .toList()));*/
-        /* (documentSnapshot.data() as Map<String, dynamic>)
-            .map((key, value) => MapEntry(key, value['duration'] ?? '0'));*/
-
-        Map<String, double> map =
+        /*Map<String, double> map =
             ((documentSnapshot.data() as Map<String, dynamic>)
                 .map((key, value) {
           Map<String, dynamic> finalMap = (value as Map<String, dynamic>);
-          return MapEntry(
-              key, double.parse((finalMap['times_opened']).toString()));
-        }));
+          String timesOpened = finalMap['times_opened'] == null
+              ? "0"
+              : (finalMap['times_opened']).toString();
+          return MapEntry(key, double.parse(timesOpened));
+        }));*/
         //print(map);
+        Map<String, double> map =
+            getPieMap(documentSnapshot.data()!, 'times_opened');
         emit(GetScreenOpenedSuccessState(map));
       } else {
         emit(GetScreenOpenedErrorState('Data Not Exists!'));
@@ -74,22 +71,16 @@ class MyActivityCubit extends Cubit<MyActivityState> {
       emit(GetEventsClickedLoadingState());
       DocumentSnapshot documentSnapshot = await repo.getEventsClicksAnalytics();
       if (documentSnapshot.exists) {
-        /* emit(GetScreenAnalyticSuccessState((documentSnapshot.data()
-                as Map<String, Map<String, dynamic>>)
-            .entries
-            .map((e) => ScreenModel2(key: e.key, value: e.value['duration']))
-            .toList()));*/
-        /* (documentSnapshot.data() as Map<String, dynamic>)
-            .map((key, value) => MapEntry(key, value['duration'] ?? '0'));*/
-
-        Map<String, double> map =
+        /*  Map<String, double> map =
             ((documentSnapshot.data() as Map<String, dynamic>)
                 .map((key, value) {
           Map<String, dynamic> finalMap = (value as Map<String, dynamic>);
           return MapEntry(
               key, double.parse((finalMap['click_count']).toString()));
-        }));
+        }));*/
         //print(map);
+        Map<String, double> map =
+            getPieMap(documentSnapshot.data()!, 'click_count');
         emit(GetEventsClickedSuccessState(map));
       } else {
         emit(GetEventsClickedErrorState('Data Not Exists!'));
@@ -98,5 +89,16 @@ class MyActivityCubit extends Cubit<MyActivityState> {
       print(e);
       emit(GetEventsClickedErrorState(e.toString()));
     }
+  }
+
+  Map<String, double> getPieMap(Object data, String keyName) {
+    return ((data as Map<String, dynamic>).map((key, value) {
+      Map<String, dynamic> finalMap = (value as Map<String, dynamic>);
+      return MapEntry(
+          key,
+          double.parse(
+              (finalMap[keyName] == null ? "0" : (finalMap[keyName]).toString())
+                  .toString()));
+    }));
   }
 }
