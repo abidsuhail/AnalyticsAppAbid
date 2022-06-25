@@ -36,6 +36,7 @@ class TrackerCubit {
   }
 
   void initScreenTracker(Widget widget, {bool? incrementTimesOpened}) {
-    trackerRepo.initScreenTracker(widget);
+    trackerRepo.initScreenTracker(widget,
+        incrementTimesOpened: incrementTimesOpened);
   }
 }

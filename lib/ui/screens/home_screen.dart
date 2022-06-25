@@ -263,6 +263,9 @@ class _HomeScreenState extends State<HomeScreen>
 
   void onTapMinus() {
     super.onClickTrack('MinusButton', context);
+    if (count == 0) {
+      return;
+    }
     setState(() {
       count--;
     });
