@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:analytics_app/blocs/tracker/my_activity_cubit.dart';
-import 'package:analytics_app/blocs/tracker/my_activity_state.dart';
 import 'package:analytics_app/styles/app_colors.dart';
 import 'package:analytics_app/utils/app_constants.dart';
 import 'package:analytics_app/utils/app_firebase_helper.dart';
-import 'package:analytics_app/utils/base_screen_tracker.dart';
+import 'package:analytics_app/ui/screens/base/base_screen_tracker.dart';
 import 'package:analytics_app/utils/app_utils.dart';
 import 'package:analytics_app/utils/ui_helper.dart';
 import 'package:analytics_app/widgets/app_rounded_button.dart';
@@ -15,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pie_chart/pie_chart.dart';
 
+import '../../blocs/myactivity/my_activity_cubit.dart';
+import '../../blocs/myactivity/my_activity_state.dart';
 import '../../menu/drawer_menu.dart';
 
 class ScreenAnalyticsFragment extends StatefulWidget {
@@ -38,14 +38,14 @@ class _ScreenAnalyticsFragmentState extends State<ScreenAnalyticsFragment>
     //myActivityCubit.getScreensOpenedAnalytics();
 
     WidgetsBinding.instance?.addObserver(this);
-    initScreenTracker(widget);
+    initScreenTracker(widget, context);
     super.initState();
   }
 
   void fetchData({required bool isInitState}) {
     if (!isInitState) {
-      removeScreenTracker(widget);
-      initScreenTracker(widget);
+      removeScreenTracker(widget, context);
+      initScreenTracker(widget, context);
     }
     widget.refreshHostScreenTrackingDetails();
     myActivityCubit.getScreensAnalytics();
@@ -56,7 +56,7 @@ class _ScreenAnalyticsFragmentState extends State<ScreenAnalyticsFragment>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     print("SCREEN ANALYTIC CLICKED : " + state.toString());
     if (state == AppLifecycleState.resumed) {
-      initScreenTracker(widget);
+      initScreenTracker(widget, context);
       return;
     } /* else if (state == AppLifecycleState.inactive) {
       super.removeScreenTracker(widget);
@@ -64,7 +64,7 @@ class _ScreenAnalyticsFragmentState extends State<ScreenAnalyticsFragment>
     } */
 
     else if (state == AppLifecycleState.paused) {
-      removeScreenTracker(widget);
+      removeScreenTracker(widget, context);
       return;
     }
     super.didChangeAppLifecycleState(state);
@@ -73,7 +73,7 @@ class _ScreenAnalyticsFragmentState extends State<ScreenAnalyticsFragment>
   @override
   void dispose() {
     WidgetsBinding.instance?.removeObserver(this);
-    removeScreenTracker(widget);
+    removeScreenTracker(widget, context);
     print('dispose screen analytic');
     super.dispose();
   }

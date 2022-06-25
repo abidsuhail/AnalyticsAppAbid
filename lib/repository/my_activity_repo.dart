@@ -2,13 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../models/screen_tracker_info.dart';
 import '../utils/app_firebase_helper.dart';
+import '../utils/app_geo_helper.dart';
 
-class FirestoreDbRepo {
-  static FirestoreDbRepo? _mInstance;
-
-  static FirestoreDbRepo getInstance() {
-    _mInstance ??= FirestoreDbRepo();
+class MyActivityRepo {
+  static MyActivityRepo? _mInstance;
+  static final Map<String, ScreenTrackerTimestamp> _mapTimestamp =
+      <String, ScreenTrackerTimestamp>{};
+  static MyActivityRepo getInstance() {
+    _mInstance ??= MyActivityRepo();
     return _mInstance!;
   }
 

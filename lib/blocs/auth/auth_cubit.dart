@@ -1,5 +1,5 @@
 import 'package:analytics_app/repository/auth_repo.dart';
-import 'package:analytics_app/repository/firestore_db_repo.dart';
+import 'package:analytics_app/repository/my_activity_repo.dart';
 import 'package:analytics_app/utils/app_firebase_helper.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,9 +8,9 @@ import 'package:meta/meta.dart';
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final AuthRepo authRepo;
-  FirestoreDbRepo firestoreDbRepo = FirestoreDbRepo.getInstance();
-  AuthCubit(this.authRepo) : super(AuthInitial());
+  final AuthRepo authRepo = AuthRepo.getInstance();
+  final MyActivityRepo firestoreDbRepo = MyActivityRepo.getInstance();
+  AuthCubit() : super(AuthInitial());
   void signUp({required String email, required String password}) async {
     try {
       emit(SignupLoadingState());

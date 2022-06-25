@@ -1,6 +1,6 @@
 import 'package:analytics_app/models/country_event_model.dart';
 import 'package:analytics_app/repository/auth_repo.dart';
-import 'package:analytics_app/repository/firestore_db_repo.dart';
+import 'package:analytics_app/repository/my_activity_repo.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,7 +13,7 @@ import '../../utils/app_firebase_helper.dart';
 import 'geo_state.dart';
 
 class GeoCubit extends Cubit<GeoState> {
-  final FirestoreDbRepo repo = FirestoreDbRepo.getInstance();
+  final MyActivityRepo repo = MyActivityRepo.getInstance();
   GeoCubit() : super(GeoInitialState());
 
   void getMyLocationEvents(BuildContext context) async {

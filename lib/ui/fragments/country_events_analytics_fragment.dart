@@ -1,6 +1,6 @@
 import 'package:analytics_app/models/country_event_model.dart';
 import 'package:analytics_app/styles/app_colors.dart';
-import 'package:analytics_app/utils/base_screen_tracker.dart';
+import 'package:analytics_app/ui/screens/base/base_screen_tracker.dart';
 import 'package:analytics_app/utils/ui_helper.dart';
 import 'package:analytics_app/widgets/app_rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -30,19 +30,21 @@ class _CountryEventsAnalyticsFragmentState
 
   @override
   void initState() {
+    WidgetsBinding.instance?.addObserver(this);
+
     geoCubit = BlocProvider.of<GeoCubit>(context);
     fetchData(isInitState: true);
     //myActivityCubit.getScreensOpenedAnalytics();
 
-    WidgetsBinding.instance?.addObserver(this);
-    initScreenTracker(widget);
     super.initState();
   }
 
   void fetchData({required bool isInitState}) {
     if (!isInitState) {
-      removeScreenTracker(widget);
-      initScreenTracker(widget);
+      removeScreenTracker(widget, context);
+      initScreenTracker(widget, context);
+    } else {
+      initScreenTracker(widget, context);
     }
     widget.refreshHostScreenTrackingDetails();
     geoCubit.getMyLocationEvents(context);
@@ -52,7 +54,7 @@ class _CountryEventsAnalyticsFragmentState
   void didChangeAppLifecycleState(AppLifecycleState state) {
     print("EVENTS clicked : " + state.toString());
     if (state == AppLifecycleState.resumed) {
-      initScreenTracker(widget);
+      initScreenTracker(widget, context);
       return;
     }
     /* else if (state == AppLifecycleState.inactive) {
@@ -61,7 +63,7 @@ class _CountryEventsAnalyticsFragmentState
     } */
 
     else if (state == AppLifecycleState.paused) {
-      removeScreenTracker(widget);
+      removeScreenTracker(widget, context);
       return;
     }
     super.didChangeAppLifecycleState(state);
@@ -70,8 +72,13 @@ class _CountryEventsAnalyticsFragmentState
   @override
   void dispose() {
     WidgetsBinding.instance?.removeObserver(this);
-    removeScreenTracker(widget);
+    removeScreenTracker(widget, context);
     super.dispose();
+  }
+
+  void onPressedRefresh() {
+    onClickTrack('RefreshCountryEventsButton', context);
+    fetchData(isInitState: false);
   }
 
   @override
@@ -83,12 +90,7 @@ class _CountryEventsAnalyticsFragmentState
         padding: const EdgeInsets.only(top: 15, bottom: 40),
         child: Column(
           children: [
-            AppRoundedButton(
-                label: 'REFRESH',
-                onPressed: () {
-                  onClickTrack('RefreshCountryEventsButton', context);
-                  fetchData(isInitState: false);
-                }),
+            AppRoundedButton(label: 'REFRESH', onPressed: onPressedRefresh),
             const SizedBox(
               height: 30,
             ),

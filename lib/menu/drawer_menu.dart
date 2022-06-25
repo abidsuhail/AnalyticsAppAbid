@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../styles/app_colors.dart';
 import '../ui/screens/login_screen.dart';
-import '../utils/base_screen_tracker.dart';
+import '../ui/screens/base/base_screen_tracker.dart';
 import '../utils/ui_helper.dart';
 
 class DrawerMenu {

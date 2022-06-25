@@ -6,7 +6,7 @@ import 'package:analytics_app/ui/screens/screen_1_screen.dart';
 import 'package:analytics_app/ui/screens/screen_2_screen.dart';
 import 'package:analytics_app/utils/app_constants.dart';
 import 'package:analytics_app/utils/app_firebase_helper.dart';
-import 'package:analytics_app/utils/base_screen_tracker.dart';
+import 'package:analytics_app/ui/screens/base/base_screen_tracker.dart';
 import 'package:analytics_app/utils/app_utils.dart';
 import 'package:analytics_app/utils/ui_helper.dart';
 import 'package:analytics_app/widgets/app_rounded_button.dart';
@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     WidgetsBinding.instance?.addObserver(this);
-    super.initScreenTracker(widget);
+    super.initScreenTracker(widget, context);
     super.initState();
   }
 
@@ -38,14 +38,14 @@ class _HomeScreenState extends State<HomeScreen>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     print("HOMESCREEN : " + state.toString());
     if (state == AppLifecycleState.resumed) {
-      super.initScreenTracker(widget);
+      super.initScreenTracker(widget, context);
       return;
     } /* else if (state == AppLifecycleState.inactive) {
       super.removeScreenTracker(widget);
       return;
     } */
     else if (state == AppLifecycleState.paused) {
-      super.removeScreenTracker(widget);
+      super.removeScreenTracker(widget, context);
       return;
     }
     super.didChangeAppLifecycleState(state);
@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void dispose() {
     WidgetsBinding.instance?.removeObserver(this);
-    super.removeScreenTracker(widget);
+    super.removeScreenTracker(widget, context);
     super.dispose();
   }
 
@@ -236,10 +236,12 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void onPressedScreen1() {
+    super.onClickTrack('Screen1Button', context);
     gotoScreen(context, Screen1Screen(), currentScreenTrackerWidget: widget);
   }
 
   void onPressedScreen2() {
+    super.onClickTrack('Screen2Button', context);
     gotoScreen(context, Screen2Screen(), currentScreenTrackerWidget: widget);
   }
 

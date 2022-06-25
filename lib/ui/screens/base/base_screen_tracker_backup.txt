@@ -1,22 +1,24 @@
-import 'dart:async';
-
 import 'package:analytics_app/models/screen_tracker_info.dart';
 import 'package:analytics_app/utils/app_geo_helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'app_constants.dart';
-import 'app_firebase_helper.dart';
+import '../../../utils/app_firebase_helper.dart';
 
 class BaseScreenTracker {
-  //static Map<String, Timer>? _map;
   static final Map<String, ScreenTrackerTimestamp> _mapTimestamp =
       <String, ScreenTrackerTimestamp>{};
-  static final Map<String, int> _mapScreenCount = <String, int>{};
+
+/*  ///map for storing screen with their screen opened counts
+  static final Map<String, int> _mapScreenCount = <String, int>{};*/
 
   void gotoScreen(BuildContext context, Widget toScreen,
       {bool? removePreviousStack,
       required Widget currentScreenTrackerWidget}) async {
+    /**
+     * This is special method,for navigating to another
+    screen(which automatically updates screen tracking details to db)
+     */
     removeScreenTracker(currentScreenTrackerWidget);
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => toScreen));
@@ -24,19 +26,26 @@ class BaseScreenTracker {
   }
 
   void initScreenTracker(Widget widget, {bool? incrementTimesOpened}) {
-    ///start date at init screen
-    ///end date at dispose screen
-    ///find the diff b/w them and send to firestore
-    ///+1 count screen opens
+    /**
+     start date at init screen
+    end date at dispose screen
+    find the diff b/w them and send to firestore
+     */
     if (incrementTimesOpened == null || incrementTimesOpened) {
+      ///+1 count screen opens on init screen
       incTimeScreenOpened(widget);
     }
-    _mapScreenCount[widget.runtimeType.toString()] =
-        (_mapScreenCount[widget.runtimeType.toString()] ?? 0) + 1;
 
-    print("count " + _mapScreenCount[widget.runtimeType.toString()].toString());
+    /**
+     *  "widget.runtimeType.toString()" is dynamic screen name,
+     *  Saving timestamp when specific screen opens
+    * */
     _mapTimestamp[widget.runtimeType.toString()] =
         ScreenTrackerTimestamp(startTime: DateTime.now());
+
+    /*  _mapScreenCount[widget.runtimeType.toString()] =
+        (_mapScreenCount[widget.runtimeType.toString()] ?? 0) + 1;*/
+    /*print("count " + _mapScreenCount[widget.runtimeType.toString()].toString());*/
   }
 
   void onClickTrack(String clickName, BuildContext context) async {
@@ -57,8 +66,10 @@ class BaseScreenTracker {
   }
 
   void incTimeScreenOpened(Widget widget) {
+    if (!AppFirebaseHelper.isAuthenticated()) {
+      return;
+    }
     DocumentReference doc = AppFirebaseHelper.getMyScreenDocRef();
-
     doc.set({
       widget.runtimeType.toString(): {
         "times_opened": FieldValue.increment(1),
@@ -68,10 +79,10 @@ class BaseScreenTracker {
   }
 
   void durationScreenOpened(Widget widget, double duration) {
-    DocumentReference doc = FirebaseFirestore.instance
-        .collection('screens')
-        .doc(AppFirebaseHelper.getUid());
-
+    if (!AppFirebaseHelper.isAuthenticated()) {
+      return;
+    }
+    DocumentReference doc = AppFirebaseHelper.getMyScreenDocRef();
     doc.set({
       widget.runtimeType.toString(): {
         "duration": FieldValue.increment(duration),
@@ -81,9 +92,11 @@ class BaseScreenTracker {
   }
 
   void removeScreenTracker(Widget widget) {
-    ///start date at init screen
-    ///end date at dispose screen
-    ///find the diff b/w them and send to firestore
+    /**
+     start date at init screen
+    end date at dispose screen
+    find the diff b/w them and send to firestore
+     */
     _mapTimestamp[widget.runtimeType.toString()]?.endTime = DateTime.now();
     DateTime? startTime =
         _mapTimestamp[widget.runtimeType.toString()]?.startTime;
@@ -93,37 +106,11 @@ class BaseScreenTracker {
       return;
     }
 
-    //TODO make this in minute
+    ///converting seconds to minutes
     ///update data to db
-    // durationScreenOpened(widget, (endTime.difference(startTime).inSeconds));
     int seconds = (endTime.difference(startTime).inSeconds);
     double minutes =
         double.parse(((seconds > 0) ? (seconds / 60) : 0).toStringAsFixed(1));
     durationScreenOpened(widget, minutes);
   }
 }
-
-/*  static Timer? addScreen(Widget screen) {
-    print('adding ' + screen.toString());
-    Map<String, Timer> map = getTimerMap();
-    if (map.containsKey(screen.runtimeType.toString())) {
-      removeScreen(screen);
-    }
-    map[screen.runtimeType.toString()] = getAndStartPeriodicTimer();
-    return map[screen.runtimeType.toString()];
-  }
-
-  static void removeScreen(Widget screen) {
-    print('removing ' + screen.toString());
-    Map<String, Timer> map = getTimerMap();
-    map[screen.runtimeType.toString()]?.cancel();
-    map.remove(screen.runtimeType.toString());
-  }
-
-  static Timer getAndStartPeriodicTimer() {
-    return Timer.periodic(
-        const Duration(seconds: AppConstants.SCREEN_TIMER_DURATION_SEC),
-        (timer) {
-      print(timer.tick.toString());
-    });
-  }*/

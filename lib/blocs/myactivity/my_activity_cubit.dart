@@ -1,5 +1,5 @@
 import 'package:analytics_app/repository/auth_repo.dart';
-import 'package:analytics_app/repository/firestore_db_repo.dart';
+import 'package:analytics_app/repository/my_activity_repo.dart';
 import 'package:analytics_app/utils/app_shared_prefs.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +11,7 @@ import '../../utils/app_firebase_helper.dart';
 import 'my_activity_state.dart';
 
 class MyActivityCubit extends Cubit<MyActivityState> {
-  final FirestoreDbRepo repo = FirestoreDbRepo.getInstance();
+  final MyActivityRepo repo = MyActivityRepo.getInstance();
   MyActivityCubit() : super(MyActivityInitialState());
 
   void getScreensAnalytics() async {
@@ -23,7 +23,7 @@ class MyActivityCubit extends Cubit<MyActivityState> {
       DocumentSnapshot documentSnapshot = await repo.getScreensAnalytics();
       if (documentSnapshot.exists) {
         Map<String, double> map =
-            getPieMap(documentSnapshot.data()!, 'duration');
+            getPieMap(documentSnapshot.data()!, 'duration_mins');
 
         emit(GetScreenTimeSuccessState(map));
       } else {

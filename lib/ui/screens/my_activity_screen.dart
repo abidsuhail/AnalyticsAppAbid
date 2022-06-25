@@ -1,18 +1,9 @@
-import 'dart:async';
-
 import 'package:analytics_app/styles/app_colors.dart';
 import 'package:analytics_app/ui/fragments/country_events_analytics_fragment.dart';
 import 'package:analytics_app/ui/fragments/event_clicks_analytics_fragment.dart';
 import 'package:analytics_app/ui/fragments/screen_analytics_fragment.dart';
-import 'package:analytics_app/utils/app_constants.dart';
-import 'package:analytics_app/utils/app_firebase_helper.dart';
-import 'package:analytics_app/utils/base_screen_tracker.dart';
-import 'package:analytics_app/utils/app_utils.dart';
-import 'package:analytics_app/utils/ui_helper.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:analytics_app/ui/screens/base/base_screen_tracker.dart';
 import 'package:flutter/material.dart';
-
-import '../../menu/drawer_menu.dart';
 
 class MyActivityScreen extends StatefulWidget {
   MyActivityScreen({Key? key}) : super(key: key);
@@ -27,7 +18,7 @@ class _MyActivityScreenState extends State<MyActivityScreen>
   @override
   void initState() {
     WidgetsBinding.instance?.addObserver(this);
-    super.initScreenTracker(widget);
+    super.initScreenTracker(widget, context);
     super.initState();
   }
 
@@ -35,28 +26,28 @@ class _MyActivityScreenState extends State<MyActivityScreen>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     print("BirdFlyingScreen : " + state.toString());
     if (state == AppLifecycleState.resumed) {
-      super.initScreenTracker(widget);
+      super.initScreenTracker(widget, context);
       return;
     } /* else if (state == AppLifecycleState.inactive) {
       super.removeScreenTracker(widget);
       return;
     } */
     else if (state == AppLifecycleState.paused) {
-      super.removeScreenTracker(widget);
+      super.removeScreenTracker(widget, context);
       return;
     }
     super.didChangeAppLifecycleState(state);
   }
 
   void refreshHostScreenByFragmentOnRefresh() {
-    removeScreenTracker(widget);
-    initScreenTracker(widget, incrementTimesOpened: false);
+    removeScreenTracker(widget, context);
+    initScreenTracker(widget, context, incrementTimesOpened: false);
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance?.removeObserver(this);
-    super.removeScreenTracker(widget);
+    super.removeScreenTracker(widget, context);
     super.dispose();
   }
 

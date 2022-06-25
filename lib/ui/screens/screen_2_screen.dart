@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:analytics_app/styles/app_colors.dart';
 import 'package:analytics_app/utils/app_constants.dart';
 import 'package:analytics_app/utils/app_firebase_helper.dart';
-import 'package:analytics_app/utils/base_screen_tracker.dart';
+import 'package:analytics_app/ui/screens/base/base_screen_tracker.dart';
 import 'package:analytics_app/utils/app_utils.dart';
 import 'package:analytics_app/utils/ui_helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,7 +24,7 @@ class _Screen2ScreenState extends State<Screen2Screen>
   @override
   void initState() {
     WidgetsBinding.instance?.addObserver(this);
-    super.initScreenTracker(widget);
+    super.initScreenTracker(widget, context);
     super.initState();
   }
 
@@ -32,14 +32,14 @@ class _Screen2ScreenState extends State<Screen2Screen>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     print("BirdFlyingScreen : " + state.toString());
     if (state == AppLifecycleState.resumed) {
-      super.initScreenTracker(widget);
+      super.initScreenTracker(widget, context);
       return;
     } /* else if (state == AppLifecycleState.inactive) {
       super.removeScreenTracker(widget);
       return;
     } */
     else if (state == AppLifecycleState.paused) {
-      super.removeScreenTracker(widget);
+      super.removeScreenTracker(widget, context);
       return;
     }
     super.didChangeAppLifecycleState(state);
@@ -48,7 +48,7 @@ class _Screen2ScreenState extends State<Screen2Screen>
   @override
   void dispose() {
     WidgetsBinding.instance?.removeObserver(this);
-    super.removeScreenTracker(widget);
+    super.removeScreenTracker(widget, context);
     super.dispose();
   }
 
@@ -66,9 +66,4 @@ class _Screen2ScreenState extends State<Screen2Screen>
       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-
-  void onTapEvent1() {}
-  void onTapEvent2() {}
-  void onTapEvent3() {}
-  void onTapEvent4() {}
 }
