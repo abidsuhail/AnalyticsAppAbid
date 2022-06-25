@@ -1,26 +1,14 @@
-import 'dart:async';
-import 'dart:convert';
-
-import 'package:analytics_app/blocs/tracker/my_activity_cubit.dart';
-import 'package:analytics_app/blocs/tracker/my_activity_state.dart';
 import 'package:analytics_app/models/country_event_model.dart';
 import 'package:analytics_app/styles/app_colors.dart';
-import 'package:analytics_app/ui/screens/calc_screen.dart';
-import 'package:analytics_app/utils/app_constants.dart';
-import 'package:analytics_app/utils/app_firebase_helper.dart';
 import 'package:analytics_app/utils/base_screen_tracker.dart';
-import 'package:analytics_app/utils/app_utils.dart';
 import 'package:analytics_app/utils/ui_helper.dart';
 import 'package:analytics_app/widgets/app_rounded_button.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
-import 'package:pie_chart/pie_chart.dart';
 
 import '../../blocs/geo/geo_cubit.dart';
 import '../../blocs/geo/geo_state.dart';
-import '../../menu/drawer_menu.dart';
 
 class CountryEventsAnalyticsFragment extends StatefulWidget {
   final Function() refreshHostScreenTrackingDetails;

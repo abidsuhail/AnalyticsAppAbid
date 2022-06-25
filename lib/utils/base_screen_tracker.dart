@@ -67,7 +67,7 @@ class BaseScreenTracker {
     }, SetOptions(merge: true));
   }
 
-  void durationScreenOpened(Widget widget, int duration) {
+  void durationScreenOpened(Widget widget, double duration) {
     DocumentReference doc = FirebaseFirestore.instance
         .collection('screens')
         .doc(AppFirebaseHelper.getUid());
@@ -93,12 +93,15 @@ class BaseScreenTracker {
       return;
     }
 
-    durationScreenOpened(widget, endTime.difference(startTime).inSeconds);
-
+    //TODO make this in minute
     ///update data to db
-    print(
-        '${widget.runtimeType.toString()} ${endTime.difference(startTime).inSeconds.toString()}');
+    // durationScreenOpened(widget, (endTime.difference(startTime).inSeconds));
+    int seconds = (endTime.difference(startTime).inSeconds);
+    double minutes =
+        double.parse(((seconds > 0) ? (seconds / 60) : 0).toStringAsFixed(1));
+    durationScreenOpened(widget, minutes);
   }
+}
 
 /*  static Timer? addScreen(Widget screen) {
     print('adding ' + screen.toString());
@@ -124,4 +127,3 @@ class BaseScreenTracker {
       print(timer.tick.toString());
     });
   }*/
-}

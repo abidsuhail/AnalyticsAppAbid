@@ -1,5 +1,6 @@
 import 'package:analytics_app/repository/auth_repo.dart';
 import 'package:analytics_app/repository/firestore_db_repo.dart';
+import 'package:analytics_app/utils/app_shared_prefs.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,20 +17,15 @@ class MyActivityCubit extends Cubit<MyActivityState> {
   void getScreensAnalytics() async {
     try {
       emit(GetScreenTimeLoadingState());
+      if (!AppFirebaseHelper.isAuthenticated()) {
+        throw Exception('User Logged Out!');
+      }
       DocumentSnapshot documentSnapshot = await repo.getScreensAnalytics();
       if (documentSnapshot.exists) {
-        Map<String, double> screenDurmap =
-            ((documentSnapshot.data() as Map<String, dynamic>)
-                .map((key, value) {
-          Map<String, dynamic> finalMap = (value as Map<String, dynamic>);
+        Map<String, double> map =
+            getPieMap(documentSnapshot.data()!, 'duration');
 
-          String durationInMin = finalMap['duration'] == null
-              ? "0"
-              : ((finalMap['duration'] / 60).toString());
-          return MapEntry(key, double.parse(durationInMin));
-        }));
-
-        emit(GetScreenTimeSuccessState(screenDurmap));
+        emit(GetScreenTimeSuccessState(map));
       } else {
         emit(GetScreenTimeErrorState('Data Not Exists!'));
       }
@@ -42,6 +38,9 @@ class MyActivityCubit extends Cubit<MyActivityState> {
   void getScreensOpenedAnalytics() async {
     try {
       emit(GetScreenOpenedLoadingState());
+      if (!AppFirebaseHelper.isAuthenticated()) {
+        throw Exception('User Logged Out!');
+      }
       DocumentSnapshot documentSnapshot = await repo.getScreensAnalytics();
       if (documentSnapshot.exists) {
         /*Map<String, double> map =
@@ -69,6 +68,9 @@ class MyActivityCubit extends Cubit<MyActivityState> {
   void getEventClicksAnalytics() async {
     try {
       emit(GetEventsClickedLoadingState());
+      if (!AppFirebaseHelper.isAuthenticated()) {
+        throw Exception('User Logged Out!');
+      }
       DocumentSnapshot documentSnapshot = await repo.getEventsClicksAnalytics();
       if (documentSnapshot.exists) {
         /*  Map<String, double> map =

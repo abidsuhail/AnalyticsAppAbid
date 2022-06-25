@@ -41,7 +41,12 @@ class AppGeoHelper {
     // continue accessing the position of the device.
     /* List<Placemark> placemarks =
     await placemarkFromCoordinates(52.2165157, 6.9437819);*/
-    Position position = await Geolocator.getCurrentPosition();
+    //Position position = await Geolocator.getCurrentPosition();
+    Position? position = await Future.any([
+      Geolocator.getCurrentPosition(),
+      Future.delayed(const Duration(seconds: 5), () => null),
+    ]);
+    position ??= await Geolocator.getCurrentPosition();
     List<Placemark> placemark =
         await placemarkFromCoordinates(position.latitude, position.longitude);
     if (placemark.isNotEmpty) {

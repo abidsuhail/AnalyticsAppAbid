@@ -11,14 +11,14 @@ import 'package:flutter/material.dart';
 
 import '../../menu/drawer_menu.dart';
 
-class BirdFlyingScreen extends StatefulWidget {
-  BirdFlyingScreen({Key? key}) : super(key: key);
+class Screen1Screen extends StatefulWidget {
+  Screen1Screen({Key? key}) : super(key: key);
 
   @override
-  State<BirdFlyingScreen> createState() => _BirdFlyingScreenState();
+  State<Screen1Screen> createState() => _Screen1ScreenState();
 }
 
-class _BirdFlyingScreenState extends State<BirdFlyingScreen>
+class _Screen1ScreenState extends State<Screen1Screen>
     with WidgetsBindingObserver, BaseScreenTracker {
   int count = 0;
   @override
@@ -58,19 +58,12 @@ class _BirdFlyingScreenState extends State<BirdFlyingScreen>
       backgroundColor: Colors.white,
 
       appBar: AppBar(
-        title: const Text("Bird Flying"),
+        title: const Text("Screen 1"),
         centerTitle: true,
         backgroundColor: AppColors.primaryColor,
       ),
-      body: Container(
-          color: Colors.black,
-          child: Center(child: Image.asset('images/bird3.gif'))),
+      body: Container(child: Center(child: Text('Screen 1'))),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-
-  void onTapEvent1() {}
-  void onTapEvent2() {}
-  void onTapEvent3() {}
-  void onTapEvent4() {}
 }

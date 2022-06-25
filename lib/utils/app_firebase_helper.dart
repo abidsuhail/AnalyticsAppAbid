@@ -39,4 +39,8 @@ class AppFirebaseHelper {
         .doc(AppFirebaseHelper.getUid())
         .collection("country_events");
   }
+
+  static CollectionReference getAllUserColRef() {
+    return FirebaseFirestore.instance.collection('users');
+  }
 }

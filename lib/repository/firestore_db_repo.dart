@@ -24,10 +24,13 @@ class FirestoreDbRepo {
   }
 
   Future<QuerySnapshot?> getMyLocationEvents(BuildContext context) async {
-    /*  print("------------------->" +
-        (await AppFirebaseHelper.getMyLocationEventsColRef(context))?.path);*/
-
     return (await AppFirebaseHelper.getMyLocationEventsColRef(context)).get();
+  }
+
+  void saveUserToDb(UserCredential userCredential) async {
+    AppFirebaseHelper.getAllUserColRef().doc(userCredential.user?.uid).set(
+        {"uid": userCredential.user?.uid, "email": userCredential.user?.email},
+        SetOptions(merge: true));
   }
   /* Future<DocumentSnapshot> getClicksAnalytics() async {
     return await AppFirebaseHelper.getMyClicksDocRef().get();

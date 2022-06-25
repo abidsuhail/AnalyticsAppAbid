@@ -5,20 +5,22 @@ import 'package:analytics_app/utils/app_constants.dart';
 import 'package:analytics_app/utils/app_firebase_helper.dart';
 import 'package:analytics_app/utils/base_screen_tracker.dart';
 import 'package:analytics_app/utils/app_utils.dart';
+import 'package:analytics_app/utils/ui_helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../menu/drawer_menu.dart';
 
-class CalcScreen extends StatefulWidget {
-  CalcScreen({Key? key}) : super(key: key);
+class Screen2Screen extends StatefulWidget {
+  Screen2Screen({Key? key}) : super(key: key);
 
   @override
-  State<CalcScreen> createState() => _CalcScreenState();
+  State<Screen2Screen> createState() => _Screen2ScreenState();
 }
 
-class _CalcScreenState extends State<CalcScreen>
+class _Screen2ScreenState extends State<Screen2Screen>
     with WidgetsBindingObserver, BaseScreenTracker {
+  int count = 0;
   @override
   void initState() {
     WidgetsBinding.instance?.addObserver(this);
@@ -28,7 +30,7 @@ class _CalcScreenState extends State<CalcScreen>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    print("CALCSCREEN : " + state.toString());
+    print("BirdFlyingScreen : " + state.toString());
     if (state == AppLifecycleState.resumed) {
       super.initScreenTracker(widget);
       return;
@@ -53,37 +55,20 @@ class _CalcScreenState extends State<CalcScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+
       appBar: AppBar(
-        title: const Text("Home Screen"),
+        title: const Text("Screen 2"),
+        centerTitle: true,
         backgroundColor: AppColors.primaryColor,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'CALC SCREEN',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            TextButton(
-                onPressed: () {
-                  /*         .add({
-                  'full_name': fullName, // John Doe
-                  'company': company, // Stokes and Sons
-                  'age': age // 42
-                  })
-                  FirebaseFirestore firestore = FirebaseFirestore.instance;
-                  DocumentReference doc = FirebaseFirestore.instance
-                      .collection('users')
-                      .doc('2KjIFkgCPwDxYxYCblcn');
-                  doc.update({"likes": FieldValue.increment(1)});*/
-                  //inc();
-                },
-                child: Text('OK'))
-          ],
-        ),
-      ),
+      body: Container(child: const Center(child: const Text('Screen 2'))),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+  void onTapEvent1() {}
+  void onTapEvent2() {}
+  void onTapEvent3() {}
+  void onTapEvent4() {}
 }

@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:analytics_app/styles/app_colors.dart';
 import 'package:analytics_app/ui/screens/bird_flying_screen.dart';
-import 'package:analytics_app/ui/screens/calc_screen.dart';
+import 'package:analytics_app/ui/screens/screen_1_screen.dart';
+import 'package:analytics_app/ui/screens/screen_2_screen.dart';
 import 'package:analytics_app/utils/app_constants.dart';
 import 'package:analytics_app/utils/app_firebase_helper.dart';
 import 'package:analytics_app/utils/base_screen_tracker.dart';
 import 'package:analytics_app/utils/app_utils.dart';
 import 'package:analytics_app/utils/ui_helper.dart';
+import 'package:analytics_app/widgets/app_rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -157,8 +159,30 @@ class _HomeScreenState extends State<HomeScreen>
                     ],
                   ),
                 ),
+                Divider(),
                 const SizedBox(
-                  height: 25,
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: AppRoundedButton(
+                        label: 'Screen 1',
+                        onPressed: onPressedScreen1,
+                        fitWidth: true,
+                      ),
+                    ),
+                    Expanded(
+                      child: AppRoundedButton(
+                        label: 'Screen 2',
+                        onPressed: onPressedScreen2,
+                        fitWidth: true,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 const Divider(),
                 const SizedBox(
@@ -211,6 +235,14 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+  void onPressedScreen1() {
+    gotoScreen(context, Screen1Screen(), currentScreenTrackerWidget: widget);
+  }
+
+  void onPressedScreen2() {
+    gotoScreen(context, Screen2Screen(), currentScreenTrackerWidget: widget);
+  }
+
   void onTapBackground() {
     super.onClickTrack('HomeScreenBackground', context);
   }
@@ -235,18 +267,25 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void onTapEvent1() {
+    UIHelper.showAlertDialog(context, 'Event 1 Clicked!');
     super.onClickTrack('Event1Button', context);
   }
 
   void onTapEvent2() {
+    UIHelper.showAlertDialog(context, 'Event 2 Clicked!');
+
     super.onClickTrack('Event2Button', context);
   }
 
   void onTapEvent3() {
+    UIHelper.showAlertDialog(context, 'Event 3 Clicked!');
+
     super.onClickTrack('Event3Button', context);
   }
 
   void onTapEvent4() {
+    UIHelper.showAlertDialog(context, 'Event 4 Clicked!');
+
     super.onClickTrack('Event4Button', context);
   }
 }

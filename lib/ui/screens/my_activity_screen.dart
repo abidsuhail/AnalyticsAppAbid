@@ -4,7 +4,6 @@ import 'package:analytics_app/styles/app_colors.dart';
 import 'package:analytics_app/ui/fragments/country_events_analytics_fragment.dart';
 import 'package:analytics_app/ui/fragments/event_clicks_analytics_fragment.dart';
 import 'package:analytics_app/ui/fragments/screen_analytics_fragment.dart';
-import 'package:analytics_app/ui/screens/calc_screen.dart';
 import 'package:analytics_app/utils/app_constants.dart';
 import 'package:analytics_app/utils/app_firebase_helper.dart';
 import 'package:analytics_app/utils/base_screen_tracker.dart';
