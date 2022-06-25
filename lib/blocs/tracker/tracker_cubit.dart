@@ -13,8 +13,12 @@ class TrackerCubit {
     return _instance!;
   }
 
-  void onClickTrack(String clickName, BuildContext context) async {
-    trackerRepo.onClickTrack(clickName, context);
+  void onClickTrack(String clickName, BuildContext context,
+      {bool? isLogout}) async {
+    if (!AppFirebaseHelper.isAuthenticated()) {
+      return;
+    }
+    trackerRepo.onClickTrack(clickName, context, isLogout: isLogout);
   }
 
   void incTimeScreenOpened(Widget widget) {
@@ -32,10 +36,16 @@ class TrackerCubit {
   }
 
   void removeScreenTracker(Widget widget) {
+    if (!AppFirebaseHelper.isAuthenticated()) {
+      return;
+    }
     trackerRepo.removeScreenTracker(widget);
   }
 
   void initScreenTracker(Widget widget, {bool? incrementTimesOpened}) {
+    if (!AppFirebaseHelper.isAuthenticated()) {
+      return;
+    }
     trackerRepo.initScreenTracker(widget,
         incrementTimesOpened: incrementTimesOpened);
   }

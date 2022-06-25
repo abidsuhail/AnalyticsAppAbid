@@ -15,9 +15,10 @@ class TrackerRepo {
     return _mInstance!;
   }
 
-  void onClickTrack(String clickName, BuildContext context) async {
+  void onClickTrack(String clickName, BuildContext context,
+      {bool? isLogout}) async {
     DocumentReference doc = AppFirebaseHelper.getMyClicksDocRef();
-    doc.set({
+    await doc.set({
       clickName: {
         "click_count": FieldValue.increment(1),
         "event_name": clickName,
@@ -26,10 +27,13 @@ class TrackerRepo {
     }, SetOptions(merge: true));
     CollectionReference? myLocRefEvent =
         await AppFirebaseHelper.getMyLocationEventsColRef(context);
-    myLocRefEvent.add({
+    await myLocRefEvent.add({
       "event_name": clickName,
       "country": (await AppGeoHelper.getMyCountry(context)) ?? ""
     });
+    if (isLogout != null && isLogout) {
+      await AppFirebaseHelper.logout();
+    }
   }
 
   void incTimeScreenOpened(Widget widget) {

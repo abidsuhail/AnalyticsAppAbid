@@ -79,9 +79,9 @@ class DrawerMenu {
           ),
           ListTile(
             onTap: () async {
-              homeScreen.onClickTrack('LogoutDrawerButton', context);
+              homeScreen.onClickTrack('LogoutDrawerButton', context,
+                  isLogout: true);
 
-              await AppFirebaseHelper.logout();
               UIHelper.gotoScreen(context, LoginScreen(),
                   removePreviousStack: true);
             },
