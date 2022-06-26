@@ -7,6 +7,7 @@ import 'package:analytics_app/utils/app_firebase_helper.dart';
 import 'package:analytics_app/ui/screens/base/base_screen_tracker.dart';
 import 'package:analytics_app/utils/app_utils.dart';
 import 'package:analytics_app/utils/ui_helper.dart';
+import 'package:analytics_app/widgets/app_pie_chart_widget.dart';
 import 'package:analytics_app/widgets/app_rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -129,34 +130,11 @@ class _ScreenAnalyticsFragmentState extends State<ScreenAnalyticsFragment>
                     child: CircularProgressIndicator(),
                   );
                 } else if (state is GetScreenTimeSuccessState) {
-                  return Center(
-                      child: PieChart(
-                    dataMap: state.mapScreenDuration,
-                    animationDuration: const Duration(milliseconds: 800),
-                    chartLegendSpacing: 32,
-                    chartRadius: MediaQuery.of(context).size.width / 2,
-                    colorList: AppColors.chartColorList,
-                    initialAngleInDegree: 0,
-                    chartType: ChartType.ring,
-                    ringStrokeWidth: 32,
-                    centerText: "SCREEN\nTIME\n(in mins)",
-                    legendOptions: const LegendOptions(
-                      showLegendsInRow: false,
-                      legendPosition: LegendPosition.bottom,
-                      showLegends: true,
-                      legendShape: BoxShape.circle,
-                      legendTextStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    chartValuesOptions: const ChartValuesOptions(
-                      showChartValueBackground: false,
-                      showChartValues: true,
-                      showChartValuesInPercentage: false,
-                      showChartValuesOutside: false,
-                      decimalPlaces: 1,
-                    ),
-                  ));
+                  return AppPieChartWidget(
+                      mapData: state.mapScreenDuration,
+                      chartRadius: MediaQuery.of(context).size.width / 2,
+                      isDecimal: true,
+                      centerTxt: "SCREEN\nTIME\n(in mins)");
                 }
                 return const Center(child: Text('No Data!'));
               },
@@ -201,36 +179,11 @@ class _ScreenAnalyticsFragmentState extends State<ScreenAnalyticsFragment>
                     child: CircularProgressIndicator(),
                   );
                 } else if (state is GetScreenOpenedSuccessState) {
-                  return Center(
-                      child: PieChart(
-                    dataMap: state.mapScreenOpened,
-                    animationDuration: const Duration(milliseconds: 800),
-                    chartLegendSpacing: 32,
-                    chartRadius: MediaQuery.of(context).size.width / 2,
-                    colorList: AppColors.chartColorList,
-                    initialAngleInDegree: 0,
-                    chartType: ChartType.ring,
-                    ringStrokeWidth: 32,
-                    centerText: "TIME\'S\nOPENED",
-                    legendOptions: const LegendOptions(
-                      showLegendsInRow: false,
-                      legendPosition: LegendPosition.bottom,
-                      showLegends: true,
-                      legendShape: BoxShape.circle,
-                      legendTextStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    chartValuesOptions: const ChartValuesOptions(
-                      showChartValueBackground: false,
-                      showChartValues: true,
-                      showChartValuesInPercentage: false,
-                      showChartValuesOutside: false,
-                      decimalPlaces: 0,
-                    ),
-                    // gradientList: ---To add gradient colors---
-                    // emptyColorGradient: ---Empty Color gradient---
-                  ));
+                  return AppPieChartWidget(
+                      mapData: state.mapScreenOpened,
+                      chartRadius: MediaQuery.of(context).size.width / 2,
+                      isDecimal: false,
+                      centerTxt: "TIME\'S\nOPENED");
                 }
                 return const Center(child: Text('No Data!'));
               },

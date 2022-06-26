@@ -62,7 +62,28 @@ class _Screen2ScreenState extends State<Screen2Screen>
         centerTitle: true,
         backgroundColor: AppColors.primaryColor,
       ),
-      body: Container(child: const Center(child: const Text('Screen 2'))),
+      body: Center(
+          child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Icon(
+              Icons.phone_android,
+              size: MediaQuery.of(context).size.width,
+              color: Colors.grey,
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Text(
+              'Screen 2',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 50, color: Colors.grey),
+            ),
+          ],
+        ),
+      )),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

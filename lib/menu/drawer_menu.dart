@@ -48,11 +48,11 @@ class DrawerMenu {
             height: 5,
           ),
           ListTile(
-            onTap: () {
+            onTap: () async {
               Navigator.pop(context);
               homeScreen.onClickTrack('DashboardDrawerButton', context);
             },
-            leading: Icon(
+            leading: const Icon(
               Icons.home,
               color: AppColors.accentColor,
             ),
@@ -68,7 +68,7 @@ class DrawerMenu {
               homeScreen.gotoScreen(context, MyActivityScreen(),
                   currentScreenTrackerWidget: widget);
             },
-            leading: Icon(
+            leading: const Icon(
               Icons.access_time,
               color: AppColors.accentColor,
             ),
@@ -79,13 +79,15 @@ class DrawerMenu {
           ),
           ListTile(
             onTap: () async {
-              homeScreen.onClickTrack('LogoutDrawerButton', context,
-                  isLogout: true);
+              showLoaderDialog(context);
+              await homeScreen.onClickTrack('LogoutDrawerButton', context);
+              await AppFirebaseHelper.logout();
+              Navigator.pop(context);
 
               UIHelper.gotoScreen(context, LoginScreen(),
                   removePreviousStack: true);
             },
-            leading: Icon(
+            leading: const Icon(
               Icons.logout,
               color: AppColors.accentColor,
             ),
@@ -93,4 +95,23 @@ class DrawerMenu {
           ),
         ],
       );
+  static void showLoaderDialog(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+      content: Row(
+        children: [
+          const CircularProgressIndicator(),
+          Container(
+              margin: const EdgeInsets.only(left: 7),
+              child: const Text("Logging out...")),
+        ],
+      ),
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 }

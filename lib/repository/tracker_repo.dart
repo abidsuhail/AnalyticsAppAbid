@@ -15,8 +15,7 @@ class TrackerRepo {
     return _mInstance!;
   }
 
-  void onClickTrack(String clickName, BuildContext context,
-      {bool? isLogout}) async {
+  Future<void> onClickTrack(String clickName, BuildContext context) async {
     DocumentReference doc = AppFirebaseHelper.getMyClicksDocRef();
     await doc.set({
       clickName: {
@@ -31,9 +30,6 @@ class TrackerRepo {
       "event_name": clickName,
       "country": (await AppGeoHelper.getMyCountry(context)) ?? ""
     });
-    if (isLogout != null && isLogout) {
-      await AppFirebaseHelper.logout();
-    }
   }
 
   void incTimeScreenOpened(Widget widget) {

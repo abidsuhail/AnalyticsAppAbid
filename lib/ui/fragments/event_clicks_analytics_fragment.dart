@@ -7,6 +7,7 @@ import 'package:analytics_app/utils/app_firebase_helper.dart';
 import 'package:analytics_app/ui/screens/base/base_screen_tracker.dart';
 import 'package:analytics_app/utils/app_utils.dart';
 import 'package:analytics_app/utils/ui_helper.dart';
+import 'package:analytics_app/widgets/app_pie_chart_widget.dart';
 import 'package:analytics_app/widgets/app_rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -95,12 +96,12 @@ class _EventClicksAnalyticsFragmentState
 
                   fetchData(isInitState: false);
                 }),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Column(
               children: [
-                Text(
+                const Text(
                   'EVENTS CLICKED',
                   style: TextStyle(fontSize: 24, letterSpacing: 1.5),
                 ),
@@ -111,7 +112,7 @@ class _EventClicksAnalyticsFragmentState
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
             BlocConsumer<MyActivityCubit, MyActivityState>(
@@ -131,36 +132,11 @@ class _EventClicksAnalyticsFragmentState
                     child: CircularProgressIndicator(),
                   );
                 } else if (state is GetEventsClickedSuccessState) {
-                  return Center(
-                      child: PieChart(
-                    dataMap: state.mapScreenEvents,
-                    animationDuration: const Duration(milliseconds: 800),
-                    chartLegendSpacing: 32,
-                    chartRadius: MediaQuery.of(context).size.width / 1.5,
-                    colorList: AppColors.chartColorList,
-                    initialAngleInDegree: 0,
-                    chartType: ChartType.ring,
-                    ringStrokeWidth: 32,
-                    centerText: "EVENTS\nCLICKED COUNT",
-                    legendOptions: const LegendOptions(
-                      showLegendsInRow: false,
-                      legendPosition: LegendPosition.bottom,
-                      showLegends: true,
-                      legendShape: BoxShape.circle,
-                      legendTextStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    chartValuesOptions: const ChartValuesOptions(
-                      showChartValueBackground: false,
-                      showChartValues: true,
-                      /*     chartValueStyle:
-                          TextStyle(fontSize: 5, color: Colors.black),*/
-                      showChartValuesInPercentage: false,
-                      showChartValuesOutside: false,
-                      decimalPlaces: 0,
-                    ),
-                  ));
+                  return AppPieChartWidget(
+                      mapData: state.mapScreenEvents,
+                      chartRadius: MediaQuery.of(context).size.width / 1.5,
+                      isDecimal: false,
+                      centerTxt: "EVENTS\nCLICKED COUNT");
                 }
                 return const Center(child: Text('No Data!'));
               },

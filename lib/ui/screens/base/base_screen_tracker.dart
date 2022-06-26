@@ -36,10 +36,11 @@ class BaseScreenTracker {
         .initScreenTracker(widget, incrementTimesOpened: incrementTimesOpened);
   }
 
-  void onClickTrack(String clickName, BuildContext context,
-      {bool? isLogout}) async {
-    getTrackerCubit(context)
-        .onClickTrack(clickName, context, isLogout: isLogout);
+  Future<void> onClickTrack(String clickName, BuildContext context) async {
+    await getTrackerCubit(context).onClickTrack(
+      clickName,
+      context,
+    );
   }
 
   void incTimeScreenOpened(Widget widget, BuildContext context) {

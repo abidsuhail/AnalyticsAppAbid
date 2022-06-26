@@ -56,13 +56,7 @@ class _CountryEventsAnalyticsFragmentState
     if (state == AppLifecycleState.resumed) {
       initScreenTracker(widget, context);
       return;
-    }
-    /* else if (state == AppLifecycleState.inactive) {
-      super.removeScreenTracker(widget);
-      return;
-    } */
-
-    else if (state == AppLifecycleState.paused) {
+    } else if (state == AppLifecycleState.paused) {
       removeScreenTracker(widget, context);
       return;
     }
@@ -110,7 +104,7 @@ class _CountryEventsAnalyticsFragmentState
                     children: [
                       Column(
                         children: [
-                          Text(
+                          const Text(
                             'EVENTS BY COUNTRY',
                             style: TextStyle(fontSize: 24, letterSpacing: 1.5),
                           ),
@@ -121,27 +115,31 @@ class _CountryEventsAnalyticsFragmentState
                           )
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
-                      Divider(),
+                      const Divider(),
                       GroupedListView<CountryEventModel, String>(
                         shrinkWrap: true,
                         elements: state.countryEventsList,
                         groupBy: (element) => element.country!,
-                        groupSeparatorBuilder: (String groupByValue) => Column(
-                          children: [
-                            Text(
-                              groupByValue,
-                              style:
-                                  TextStyle(fontSize: 24, letterSpacing: 1.5),
-                            ),
+                        groupSeparatorBuilder: (String groupByValue) =>
                             Container(
-                              width: 40,
-                              color: AppColors.primaryColor,
-                              height: 3,
-                            )
-                          ],
+                          child: Column(
+                            children: [
+                              Text(
+                                groupByValue,
+                                style: const TextStyle(
+                                    fontSize: 24, letterSpacing: 1.5),
+                              ),
+                              Container(
+                                width: 40,
+                                color: AppColors.primaryColor,
+                                height: 3,
+                              )
+                            ],
+                          ),
+                          margin: EdgeInsets.only(top: 25),
                         ),
                         itemBuilder: (context, CountryEventModel element) {
                           return Card(
@@ -162,25 +160,6 @@ class _CountryEventsAnalyticsFragmentState
 
                         order: GroupedListOrder.ASC, // optional
                       ),
-                      /*   ListView.builder(
-                          itemCount: state.countryEventsList.length,
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            CountryEventModel countryEventModel =
-                                state.countryEventsList[index];
-                            return Card(
-                              child: ListTile(
-                                leading: const Icon(
-                                  Icons.location_on_rounded,
-                                  size: 36,
-                                ),
-                                title: Text(countryEventModel.country ?? ''),
-                                subtitle:
-                                    Text(countryEventModel.eventName ?? ''),
-                              ),
-                            );
-                          }),*/
                     ],
                   );
                 }

@@ -13,12 +13,14 @@ class TrackerCubit {
     return _instance!;
   }
 
-  void onClickTrack(String clickName, BuildContext context,
-      {bool? isLogout}) async {
+  Future<void> onClickTrack(String clickName, BuildContext context) async {
     if (!AppFirebaseHelper.isAuthenticated()) {
       return;
     }
-    trackerRepo.onClickTrack(clickName, context, isLogout: isLogout);
+    await trackerRepo.onClickTrack(
+      clickName,
+      context,
+    );
   }
 
   void incTimeScreenOpened(Widget widget) {
