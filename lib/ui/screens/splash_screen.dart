@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:analytics_app/ui/screens/home_screen.dart';
 import 'package:analytics_app/ui/screens/login_screen.dart';
+import 'package:analytics_app/utils/app_constants.dart';
 import 'package:analytics_app/utils/app_firebase_helper.dart';
 import 'package:analytics_app/utils/ui_helper.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 150,
             )),
             Text(
-              'Analytic App',
+              AppConstants.APP_NAME,
               style: TextStyle(fontSize: 30, letterSpacing: 5),
             ),
           ],

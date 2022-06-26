@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Container(
+                SizedBox(
                   height: 200,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -91,7 +91,9 @@ class _HomeScreenState extends State<HomeScreen>
                               child: const Text(
                                 'Event 1',
                                 style: TextStyle(
-                                    fontSize: 23, color: Colors.white),
+                                    fontSize: 23,
+                                    color: Colors.white,
+                                    letterSpacing: 1.3),
                               ),
                             ),
                           ),
@@ -107,7 +109,9 @@ class _HomeScreenState extends State<HomeScreen>
                               child: const Text(
                                 'Event 2',
                                 style: TextStyle(
-                                    fontSize: 23, color: Colors.white),
+                                    fontSize: 23,
+                                    color: Colors.white,
+                                    letterSpacing: 1.3),
                               ),
                             ),
                           ),
@@ -134,7 +138,9 @@ class _HomeScreenState extends State<HomeScreen>
                               child: const Text(
                                 'Event 3',
                                 style: TextStyle(
-                                    fontSize: 23, color: Colors.white),
+                                    fontSize: 23,
+                                    color: Colors.white,
+                                    letterSpacing: 1.3),
                               ),
                             ),
                           ),
@@ -150,7 +156,9 @@ class _HomeScreenState extends State<HomeScreen>
                               child: const Text(
                                 'Event 4',
                                 style: TextStyle(
-                                    fontSize: 23, color: Colors.white),
+                                    fontSize: 23,
+                                    color: Colors.white,
+                                    letterSpacing: 1.3),
                               ),
                             ),
                           ),
@@ -167,14 +175,14 @@ class _HomeScreenState extends State<HomeScreen>
                   children: [
                     Expanded(
                       child: AppRoundedButton(
-                        label: 'Screen 1',
+                        label: 'SCREEN 1',
                         onPressed: onPressedScreen1,
                         fitWidth: true,
                       ),
                     ),
                     Expanded(
                       child: AppRoundedButton(
-                        label: 'Screen 2',
+                        label: 'SCREEN 2',
                         onPressed: onPressedScreen2,
                         fitWidth: true,
                       ),
